@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_app/src/binding/init_binding.dart';
+import 'package:flutter_bluetooth_app/src/view/onboard.dart';
 import 'package:get/get.dart';
 
-import 'src/view/home.dart';
-
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runApp(const MyApp());
 }
 
@@ -15,13 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xff303c3d),
           appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
+              backgroundColor: Color(0xff303c3d),
+              foregroundColor: Colors.white,
               elevation: 0.0),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
               backgroundColor: Colors.white, foregroundColor: Colors.black)),
-      home: const Home(),
+      home: const OnBoard(),
       initialBinding: InitBinding(),
     );
   }

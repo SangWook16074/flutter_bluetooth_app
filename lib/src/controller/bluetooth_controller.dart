@@ -11,6 +11,12 @@ class BluetoothController extends GetxController {
   List<BluetoothDevice> get result => _result.value;
   Status get status => _status.value;
 
+  @override
+  void onInit() {
+    super.onInit();
+    startScan();
+  }
+
   void startScan() async {
     _status(Status.LOADING);
     await flutterBlue
@@ -27,5 +33,10 @@ class BluetoothController extends GetxController {
   void stopScan() {
     flutterBlue.stopScan();
     _status(Status.LOADED);
+  }
+
+  void removeDevice(int index) {
+    _result.value.removeAt(index);
+    _result.refresh();
   }
 }
