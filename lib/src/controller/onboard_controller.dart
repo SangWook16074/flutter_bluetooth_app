@@ -1,8 +1,8 @@
-import 'package:flutter_bluetooth_app/src/binding/home_binding.dart';
 import 'package:get/get.dart';
 
-import '../view/home.dart';
+import '../app.dart';
+import '../binding/app_binding.dart';
 
 class OnboardController extends GetxController {
-  void moveToScan() => Get.to(() => const Home(), binding: HomeBinding());
+  void moveToScan() => Get.to(() => const App(), binding: AppBinding());
 }
