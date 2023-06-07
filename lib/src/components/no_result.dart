@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:rive/rive.dart';
 
 class NoResult extends StatelessWidget {
@@ -23,8 +24,8 @@ class NoResult extends StatelessWidget {
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: RiveAnimation.asset('assets/rives/search.riv'),
+              child: Center(
+                child: RiveAnimation.asset(RiveAssetPath.noResult),
               ),
             ),
           ),

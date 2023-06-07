@@ -18,10 +18,9 @@ class BluetoothController extends GetxController {
   }
 
   void startScan() async {
+    _result.value.clear();
     _status(Status.LOADING);
-    await flutterBlue
-        .startScan(timeout: const Duration(seconds: 4))
-        .then((value) {
+    flutterBlue.startScan(timeout: const Duration(seconds: 4)).then((value) {
       _status(Status.LOADED);
     });
 

@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_app/src/components/no_result.dart';
+import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 
 import '../controller/bluetooth_controller.dart';
 
@@ -12,6 +16,7 @@ class Home extends GetView<BluetoothController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         floatingActionButton: Obx(
           () => FloatingActionButton(
             onPressed: (controller.status == Status.LOADED)
@@ -22,13 +27,44 @@ class Home extends GetView<BluetoothController> {
                 : const Icon(Icons.square),
           ),
         ),
-        appBar: AppBar(
-          title: const Text('Bluetooth Scanner'),
+        appBar: PreferredSize(
+          preferredSize: const Size(
+            double.infinity,
+            56.0,
+          ),
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: AppBar(
+                systemOverlayStyle: SystemUiOverlayStyle.light,
+                backgroundColor: Colors.white.withOpacity(0.1),
+                title: const Text('Bluetooth Scanner'),
+                elevation: 5.0,
+              ),
+            ),
+          ),
         ),
-        body: Obx(
-          () => (controller.status == Status.LOADING)
-              ? _scan()
-              : ((controller.result.isEmpty) ? _noResult() : _result()),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [
+                  0.1,
+                  0.4,
+                  0.6,
+                ],
+                colors: [
+                  Color(0xff081c1d),
+                  Color(0xff0b2a2d),
+                  Color(0xff0d393f),
+                ]),
+          ),
+          child: Obx(
+            () => (controller.status == Status.LOADING)
+                ? _scan()
+                : ((controller.result.isEmpty) ? _noResult() : _result()),
+          ),
         ));
   }
 
@@ -75,7 +111,7 @@ class Home extends GetView<BluetoothController> {
               child: ListTile(
                 leading: const Icon(
                   Icons.bluetooth,
-                  color: Colors.blue,
+                  color: Color(0xff03b6dc),
                   size: 40,
                 ),
                 title: Text(
@@ -95,12 +131,12 @@ class Home extends GetView<BluetoothController> {
   }
 
   Widget _scan() {
-    return const Center(
+    return Center(
       child: SizedBox(
         width: 300,
         height: 300,
-        child: RiveAnimation.asset(
-          'assets/rives/circular_progress_indicator.riv',
+        child: rive.RiveAnimation.asset(
+          RiveAssetPath.search,
         ),
       ),
     );
