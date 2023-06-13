@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorKey: Get.key,
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xff303c3d),
