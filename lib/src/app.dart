@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_app/src/view/connect.dart';
-import 'package:flutter_bluetooth_app/src/view/home.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'controller/bottom_nav_controller.dart';
+import 'view/connect.dart';
+import 'view/home.dart';
 
 class App extends GetView<BottomNavController> {
   const App({super.key});
@@ -31,17 +31,15 @@ class App extends GetView<BottomNavController> {
                   Color(0xff0d393f),
                 ]),
           ),
-          child: IndexedStack(
-            index: controller.pageIndex,
-            children: const [
-              Home(),
-              Connect(),
-            ],
+          child: PageView(
+            controller: controller.pageController,
+            onPageChanged: controller.changePage,
+            children: const [Home(), Connect()],
           ),
         ),
         bottomNavigationBar: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12.0),
             child: BackdropFilter(
@@ -52,10 +50,10 @@ class App extends GetView<BottomNavController> {
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 selectedFontSize: 12.0,
-                backgroundColor: Colors.black.withOpacity(0.1),
+                backgroundColor: Colors.white.withOpacity(0.7),
                 onTap: controller.changePage,
                 currentIndex: controller.pageIndex,
-                selectedItemColor: Colors.white,
+                selectedItemColor: Colors.black,
                 unselectedItemColor: Colors.white,
                 items: const [
                   BottomNavigationBarItem(

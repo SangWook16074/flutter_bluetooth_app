@@ -8,5 +8,6 @@ class AppBinding implements Bindings {
   void dependencies() {
     Get.put(BottomNavController(), permanent: true);
     Get.put(BluetoothController());
+    // Get.put(ConnectController());
   }
 }
