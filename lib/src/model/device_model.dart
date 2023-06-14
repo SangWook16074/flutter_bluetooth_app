@@ -14,4 +14,11 @@ class DeviceModel {
     id = result.device.id;
     isConnected = false;
   }
+
+  DeviceModel.fromAlreadyConnect(BluetoothDevice device) {
+    device = device;
+    name = device.name;
+    id = device.id;
+    isConnected = true;
+  }
 }

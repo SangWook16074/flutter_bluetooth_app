@@ -62,6 +62,17 @@ class Home extends GetView<BluetoothController> {
     }
   }
 
+  Widget _already() {
+    return (controller.aleady.isNotEmpty)
+        ? ListView.builder(
+            itemCount: controller.aleady.length,
+            itemBuilder: (context, index) => const ListTile(
+              title: Text('hello'),
+            ),
+          )
+        : Container();
+  }
+
   Widget _result() {
     return (controller.result.isEmpty)
         ? _noResult()
@@ -74,7 +85,10 @@ class Home extends GetView<BluetoothController> {
                       padding: EdgeInsets.all(20.0),
                       child: Text(
                         'Available LED\'s',
-                        style: TextStyle(fontSize: 30, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -118,18 +132,20 @@ class Home extends GetView<BluetoothController> {
                             ],
                           ),
                           child: Card(
+                            color: (data.isConnected)
+                                ? Colors.lightGreen
+                                : Colors.white,
                             elevation: 5.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0)),
                             child: ListTile(
-                              tileColor: (data.isConnected)
-                                  ? Colors.green.withOpacity(0.3)
-                                  : Colors.white,
                               onTap: () {
                                 if (!data.isConnected) {
                                   return;
                                 }
-                                Get.to(() => const Connect());
+                                Get.to(() => Connect(
+                                      deviceModel: data,
+                                    ));
                               },
                               leading: const Icon(
                                 Icons.bluetooth,
