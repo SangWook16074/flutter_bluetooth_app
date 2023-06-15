@@ -13,7 +13,7 @@ class BluetoothCheckController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // moveToPage();
+
     _state.bindStream(flutterBlue.state);
   }
 

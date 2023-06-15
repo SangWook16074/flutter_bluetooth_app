@@ -26,4 +26,12 @@ class BluetoothApi {
       return devices;
     });
   }
+
+  static Future<void> connectDevice(DeviceModel deviceModel) async {
+    await deviceModel.device!.connect();
+  }
+
+  static Future<void> disconnect(DeviceModel deviceModel) async {
+    await deviceModel.device!.disconnect();
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class GradientButton extends StatelessWidget {
   final double width;
   final double height;
+  final List<Color> colors;
   final Widget? child;
   final void Function()? onPressed;
   const GradientButton(
@@ -10,7 +11,8 @@ class GradientButton extends StatelessWidget {
       required this.width,
       required this.height,
       this.child,
-      this.onPressed});
+      this.onPressed,
+      required this.colors});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +25,8 @@ class GradientButton extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.0),
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xff03b6dc),
-                Color(0xff69e4ff),
-              ],
+            gradient: LinearGradient(
+              colors: colors,
             )),
         child: InkWell(
           onTap: onPressed!,

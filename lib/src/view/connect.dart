@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_app/src/components/gradient_button.dart';
 import 'package:flutter_bluetooth_app/src/controller/bluetooth_controller.dart';
 import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
 import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
@@ -44,18 +45,7 @@ class _ConnectState extends State<Connect> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          GetBuilder<BluetoothController>(
-            builder: (controller) => IconButton(
-                onPressed: () async {
-                  controller.sendData(widget.deviceModel.device!, "1");
-                  setState(() {
-                    widget.current = false;
-                  });
-                },
-                icon: const Icon(Icons.add)),
-          )
-        ],
+        title: const Text("LED Server"),
       ),
       body: Container(
           decoration: const BoxDecoration(
@@ -73,53 +63,75 @@ class _ConnectState extends State<Connect> {
                   Color(0xff0d393f),
                 ]),
           ),
-          child: _body()),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _usage(),
+              _led(),
+              _nextBtn(),
+            ],
+          )),
     );
   }
 
-  Widget _body() {
+  Widget _led() {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          GetBuilder<BluetoothController>(
-            builder: (controller) => GestureDetector(
-              onTap: () async {
-                if (widget.current) {
-                  controller.sendData(widget.deviceModel.device!, "0");
-                } else {
-                  controller.sendData(widget.deviceModel.device!, "1");
-                }
-                setState(() {
-                  widget.current = !widget.current;
-                });
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: SizedBox(
-                        width: 300,
-                        height: 300,
-                        child: rive.RiveAnimation.asset((widget.current)
-                            ? RiveAssetPath.ledOn
-                            : RiveAssetPath.ledOff)),
-                  ),
-                ),
+      child: GetBuilder<BluetoothController>(
+        builder: (controller) => GestureDetector(
+          onTap: () async {
+            if (widget.current) {
+              controller.sendData(widget.deviceModel.device!, "0");
+            } else {
+              controller.sendData(widget.deviceModel.device!, "1");
+            }
+            setState(() {
+              widget.current = !widget.current;
+            });
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100.0),
+                child: SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: rive.RiveAnimation.asset((widget.current)
+                        ? RiveAssetPath.ledOn
+                        : RiveAssetPath.ledOff)),
               ),
             ),
           ),
-          GetBuilder<BluetoothController>(
-            builder: (controller) => IconButton(
-                onPressed: () => controller.disconnect(widget.deviceModel),
-                icon: const Icon(Icons.close)),
-          )
-        ],
+        ),
       ),
     );
+  }
+
+  Widget _nextBtn() {
+    return GetBuilder<BluetoothController>(
+      builder: (controller) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+        child: GradientButton(
+          colors: const [
+            Color(0xfffc4032),
+            Color(0xffde6057),
+          ],
+          width: 150,
+          height: 50,
+          onPressed: () => controller.disconnect(widget.deviceModel),
+          child: const Text(
+            'Disconnect',
+            style: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _usage() {
+    return const Text("data");
   }
 }

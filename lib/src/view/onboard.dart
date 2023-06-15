@@ -81,6 +81,10 @@ class OnBoard extends GetView<OnboardController> {
         width: 150,
         height: 50,
         onPressed: controller.moveToScan,
+        colors: const [
+          Color(0xff03b6dc),
+          Color(0xff69e4ff),
+        ],
         child: const Text(
           'Start',
           style: TextStyle(

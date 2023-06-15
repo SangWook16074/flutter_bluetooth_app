@@ -6,6 +6,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 import 'package:flutter_bluetooth_app/src/constants/flutter_blue_const.dart';
 import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
+import 'package:flutter_bluetooth_app/src/data/provider/bluetooth_provider.dart';
 import 'package:flutter_bluetooth_app/src/data/repository/bluetooth_repository.dart';
 import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:get/get.dart';
@@ -67,9 +68,9 @@ class BluetoothController extends GetxController {
     _result.refresh();
   }
 
-  void connectDevice(DeviceModel deviceModel) async {
+  Future<void> connectDevice(DeviceModel deviceModel) async {
     try {
-      await deviceModel.device!.connect().then((value) {
+      await BluetoothApi.connectDevice(deviceModel).then((value) {
         _showConnectToast();
         result.remove(deviceModel);
         deviceModel.isConnected = true;
@@ -81,9 +82,9 @@ class BluetoothController extends GetxController {
     }
   }
 
-  void disconnect(DeviceModel deviceModel) {
+  Future<void> disconnect(DeviceModel deviceModel) async {
     try {
-      deviceModel.device!.disconnect().then((value) {
+      BluetoothApi.disconnect(deviceModel).then((value) {
         _showDisconnectToast();
         already.remove(deviceModel);
         _already.refresh();
