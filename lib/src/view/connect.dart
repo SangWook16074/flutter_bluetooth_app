@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_app/src/controller/bluetooth_controller.dart';
-import 'package:flutter_bluetooth_app/src/model/device_model.dart';
+import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
 import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart' as rive;

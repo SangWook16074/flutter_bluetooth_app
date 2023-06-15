@@ -19,12 +19,9 @@ class BluetoothCheckController extends GetxController {
 
   void moveToPage() {
     if (_state.value == BluetoothState.on) {
-      print(_state.value.toString());
       Get.off(() => const Home(),
           binding: AppBinding(), transition: Transition.fadeIn);
     } else {
-      print(_state.value.toString());
-
       Get.off(() => const Check(), transition: Transition.fadeIn);
     }
   }

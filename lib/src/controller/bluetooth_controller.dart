@@ -1,57 +1,42 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-import 'package:flutter_bluetooth_app/src/binding/app_binding.dart';
 import 'package:flutter_bluetooth_app/src/constants/flutter_blue_const.dart';
-import 'package:flutter_bluetooth_app/src/model/device_model.dart';
+import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
+import 'package:flutter_bluetooth_app/src/data/repository/bluetooth_repository.dart';
 import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
-import 'package:flutter_bluetooth_app/src/view/check.dart';
-import 'package:flutter_bluetooth_app/src/view/home.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 
-enum Status { LOADING, LOADED, INIT }
+enum Status { LOADING, LOADED }
 
 class BluetoothController extends GetxController {
   final _result = Rx<List<DeviceModel>>([]);
   final _already = Rx<List<DeviceModel>>([]);
 
-  final _status = Status.INIT.obs;
+  final _status = Status.LOADED.obs;
 
   List<DeviceModel> get result => _result.value;
-  List<DeviceModel> get aleady => _already.value;
+  List<DeviceModel> get already => _already.value;
 
   Status get status => _status.value;
+  set already(value) => _already.value = value;
 
   @override
   void onInit() {
     super.onInit();
-    moveToPage();
     fetchAlreadyConnected();
-    _result.bindStream(startScan());
+    startScan();
   }
 
-  void fetchAlreadyConnected() async {
-    await flutterBlue.connectedDevices.then((devices) {
-      _result.value.addAll(devices
-          .map((device) => DeviceModel.fromAlreadyConnect(device))
-          .toList());
-    });
+  void stateListener() {}
 
-    _result.refresh();
-    print(_result.value);
-  }
-
-  void moveToPage() {
-    flutterBlue.state.listen((state) {
-      if (state == BluetoothState.on) {
-        Get.off(() => const Home(),
-            binding: AppBinding(), transition: Transition.fadeIn);
-      } else {
-        Get.off(() => const Check(), transition: Transition.fadeIn);
-      }
+  void fetchAlreadyConnected() {
+    BluetoothRepository.getConnectedDevices().then((data) {
+      already = data;
     });
   }
 
@@ -61,30 +46,15 @@ class BluetoothController extends GetxController {
         stopScan();
         break;
       case Status.LOADED:
-      case Status.INIT:
         startScan();
         break;
     }
   }
 
-  Stream<List<DeviceModel>> startScan() {
-    _result.value.clear();
-    // _connect.value.clear();
+  void startScan() {
     _status(Status.LOADING);
-    flutterBlue.startScan(timeout: const Duration(seconds: 4)).then((value) {
-      _status(Status.LOADED);
-    });
-
-    return flutterBlue.scanResults.map((results) {
-      List<DeviceModel> devices = [];
-      for (var result in results) {
-        if (result.device.name == 'LED DEVICE') {
-          final device = DeviceModel.fromScan(result);
-          devices.add(device);
-        }
-      }
-      return devices;
-    });
+    _result.bindStream(BluetoothRepository.getDevices());
+    _status(Status.LOADED);
   }
 
   void stopScan() {
@@ -101,7 +71,9 @@ class BluetoothController extends GetxController {
     try {
       await deviceModel.device!.connect().then((value) {
         _showConnectToast();
+        result.remove(deviceModel);
         deviceModel.isConnected = true;
+        already.add(deviceModel);
         _result.refresh();
       });
     } catch (e) {
@@ -113,8 +85,8 @@ class BluetoothController extends GetxController {
     try {
       deviceModel.device!.disconnect().then((value) {
         _showDisconnectToast();
-        deviceModel.isConnected = false;
-        _result.refresh();
+        already.remove(deviceModel);
+        _already.refresh();
       });
     } catch (e) {
       _showErrorToast();
