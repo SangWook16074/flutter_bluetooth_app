@@ -132,6 +132,9 @@ class _ConnectState extends State<Connect> {
   }
 
   Widget _usage() {
-    return const Text("data");
+    return const Text(
+      "tap : LED ON/OFF",
+      style: TextStyle(color: Colors.white, fontSize: 30),
+    );
   }
 }

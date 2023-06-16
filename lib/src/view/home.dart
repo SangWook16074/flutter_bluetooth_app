@@ -152,6 +152,6 @@ class Home extends GetView<BluetoothController> {
   }
 
   Widget _noResult() {
-    return const NoResult(width: 300, height: 300);
+    return const NoResult(width: double.infinity, height: 300);
   }
 }

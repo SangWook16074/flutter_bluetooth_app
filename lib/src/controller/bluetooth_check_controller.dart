@@ -1,27 +1,28 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-
-import 'package:flutter_bluetooth_app/src/binding/app_binding.dart';
 import 'package:flutter_bluetooth_app/src/view/check.dart';
+import 'package:flutter_bluetooth_app/src/view/home.dart';
 import 'package:get/get.dart';
 
 import '../constants/flutter_blue_const.dart';
-import '../view/home.dart';
 
 class BluetoothCheckController extends GetxController {
-  final _state = Rx<BluetoothState>(BluetoothState.off);
+  final _bluetoothState = Rx<BluetoothState>(BluetoothState.unknown);
+
+  set bluetoothState(value) => _bluetoothState.value = value;
 
   @override
-  void onInit() {
-    super.onInit();
-
-    _state.bindStream(flutterBlue.state);
+  void onReady() {
+    super.onReady();
+    ever(_bluetoothState, (_) => moveToPage());
+    _bluetoothState.bindStream(flutterBlue.state);
   }
 
   void moveToPage() {
-    if (_state.value == BluetoothState.on) {
-      Get.off(() => const Home(),
-          binding: AppBinding(), transition: Transition.fadeIn);
+    if (_bluetoothState.value == BluetoothState.on) {
+      print('eh');
+      Get.off(() => const Home(), transition: Transition.fadeIn);
     } else {
+      print('he');
       Get.off(() => const Check(), transition: Transition.fadeIn);
     }
   }

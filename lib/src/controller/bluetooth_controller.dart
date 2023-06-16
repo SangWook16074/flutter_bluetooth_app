@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-
 import 'package:flutter_bluetooth_app/src/constants/flutter_blue_const.dart';
 import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
 import 'package:flutter_bluetooth_app/src/data/provider/bluetooth_provider.dart';
+import 'package:flutter_bluetooth_app/src/data/provider/record_connect.dart';
 import 'package:flutter_bluetooth_app/src/data/repository/bluetooth_repository.dart';
 import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:get/get.dart';
@@ -33,12 +31,15 @@ class BluetoothController extends GetxController {
     startScan();
   }
 
-  void stateListener() {}
+  void fetchAlreadyConnected() async {
+    while (true) {
+      await Future.delayed(const Duration(seconds: 1));
 
-  void fetchAlreadyConnected() {
-    BluetoothRepository.getConnectedDevices().then((data) {
-      already = data;
-    });
+      BluetoothRepository.getConnectedDevices().then((data) {
+        already = data;
+        print('새로고침');
+      });
+    }
   }
 
   void fabAction() {
@@ -55,6 +56,7 @@ class BluetoothController extends GetxController {
   void startScan() {
     _status(Status.LOADING);
     _result.bindStream(BluetoothRepository.getDevices());
+
     _status(Status.LOADED);
   }
 
@@ -71,10 +73,15 @@ class BluetoothController extends GetxController {
   Future<void> connectDevice(DeviceModel deviceModel) async {
     try {
       await BluetoothApi.connectDevice(deviceModel).then((value) {
+        DeviceHistory.saveDevice(deviceModel.id.toString());
+        debugPrint("연결기록남김");
+
         _showConnectToast();
         result.remove(deviceModel);
         deviceModel.isConnected = true;
+        //fetchAlreadyConnected();
         already.add(deviceModel);
+        _already.refresh();
         _result.refresh();
       });
     } catch (e) {
@@ -87,6 +94,7 @@ class BluetoothController extends GetxController {
       BluetoothApi.disconnect(deviceModel).then((value) {
         _showDisconnectToast();
         already.remove(deviceModel);
+        //fetchAlreadyConnected();
         _already.refresh();
       });
     } catch (e) {
@@ -140,45 +148,19 @@ class BluetoothController extends GetxController {
   void _showErrorToast() => showToast('Error !', 'error');
 
   Future<List<int>> searchService(DeviceModel deviceModel) async {
-    debugPrint('Start Read');
-
-    List<int> result = [];
-
     try {
-      List<BluetoothService> services =
-          await deviceModel.device!.discoverServices();
-      for (var service in services) {
-        if (service.uuid.toString() == '4fafc201-1fb5-459e-8fcc-c5c9c331914b') {
-          var cs = service.characteristics;
-          for (BluetoothCharacteristic c in cs) {
-            result = await c.read();
-          }
-        }
-      }
-      return result;
+      return BluetoothApi.searchService(deviceModel);
     } catch (e) {
       print("Error: $e");
       return [];
     }
   }
 
-  void sendData(BluetoothDevice device, String data) async {
-    Guid serviceUuid = Guid("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
-    Guid characteristicUuid = Guid("beb5483e-36e1-4688-b7f5-ea07361b26a8");
-
-    List<BluetoothService> services = await device.discoverServices();
-    BluetoothService service =
-        services.firstWhere((s) => s.uuid == serviceUuid);
-    BluetoothCharacteristic characteristic =
-        service.characteristics.firstWhere((c) => c.uuid == characteristicUuid);
-
-    List<int> value = utf8.encode(data); // Convert string to byte list
-
+  void sendData(BluetoothDevice device, String data) {
     try {
-      await characteristic.write(value);
-      print("Data sent successfully");
+      BluetoothApi.sendData(device, data);
     } catch (e) {
-      print("error");
+      _showErrorToast();
     }
   }
 }
