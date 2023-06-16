@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
-import 'package:rive/rive.dart' as rive;
+import 'package:flutter_bluetooth_app/src/components/rive_image.dart';
 
 class Check extends StatelessWidget {
   const Check({super.key});
@@ -35,14 +34,7 @@ class Check extends StatelessWidget {
   }
 
   Widget _logo() {
-    return SizedBox(
-      width: 400,
-      height: 400,
-      child: rive.RiveAnimation.asset(
-        RiveAssetPath.check,
-        fit: BoxFit.contain,
-      ),
-    );
+    return RiveImage(imagePath: RiveAssetPath.check, width: 400, height: 400);
   }
 
   Widget _text() {

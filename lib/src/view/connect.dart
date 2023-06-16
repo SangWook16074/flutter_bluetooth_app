@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_app/src/components/gradient_button.dart';
+import 'package:flutter_bluetooth_app/src/components/rive_image.dart';
 import 'package:flutter_bluetooth_app/src/controller/bluetooth_controller.dart';
 import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
-import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
 import 'package:get/get.dart';
-import 'package:rive/rive.dart' as rive;
 
 class Connect extends StatefulWidget {
   final DeviceModel deviceModel;
@@ -95,12 +94,13 @@ class _ConnectState extends State<Connect> {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100.0),
-                child: SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: rive.RiveAnimation.asset((widget.current)
-                        ? RiveAssetPath.ledOn
-                        : RiveAssetPath.ledOff)),
+                child: RiveImage(
+                  imagePath: (widget.current)
+                      ? RiveAssetPath.ledOn
+                      : RiveAssetPath.ledOff,
+                  width: 300,
+                  height: 300,
+                ),
               ),
             ),
           ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_app/src/components/background.dart';
 import 'package:flutter_bluetooth_app/src/components/connect_item.dart';
 import 'package:flutter_bluetooth_app/src/components/result_item.dart';
 import 'package:flutter_bluetooth_app/src/components/no_result.dart';
-import 'package:flutter_bluetooth_app/src/res/rive_path.dart';
+import 'package:flutter_bluetooth_app/src/components/rive_image.dart';
 import 'package:flutter_bluetooth_app/src/view/connect.dart';
 import 'package:get/get.dart';
-import 'package:rive/rive.dart' as rive;
 
 import '../controller/bluetooth_controller.dart';
 
@@ -28,22 +28,7 @@ class Home extends GetView<BluetoothController> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         extendBodyBehindAppBar: true,
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [
-                  0.1,
-                  0.4,
-                  0.6,
-                ],
-                colors: [
-                  Color(0xff081c1d),
-                  Color(0xff0b2a2d),
-                  Color(0xff0d393f),
-                ]),
-          ),
+        body: BackGround(
           child: Obx(
             () => _home(),
           ),
@@ -51,20 +36,14 @@ class Home extends GetView<BluetoothController> {
   }
 
   Widget _home() {
-    switch (controller.status) {
-      case Status.LOADING:
-        return _scan();
-
-      case Status.LOADED:
-        return SafeArea(
-          child: ListView(
-            children: [
-              _already(),
-              _result(),
-            ],
-          ),
-        );
-    }
+    return SafeArea(
+      child: ListView(
+        children: [
+          _already(),
+          _result(),
+        ],
+      ),
+    );
   }
 
   Widget _already() {
@@ -115,7 +94,7 @@ class Home extends GetView<BluetoothController> {
 
   Widget _result() {
     return (controller.result.isEmpty)
-        ? Container()
+        ? _noResult()
         : Column(
             children: [
               Row(
@@ -165,14 +144,11 @@ class Home extends GetView<BluetoothController> {
 
   Widget _scan() {
     return Center(
-      child: SizedBox(
-        width: 300,
-        height: 300,
-        child: rive.RiveAnimation.asset(
-          RiveAssetPath.search,
-        ),
-      ),
-    );
+        child: RiveImage(
+      imagePath: RiveAssetPath.search,
+      height: 300,
+      width: 300,
+    ));
   }
 
   Widget _noResult() {
