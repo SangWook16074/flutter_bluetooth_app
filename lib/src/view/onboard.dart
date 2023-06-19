@@ -34,7 +34,7 @@ class OnBoard extends GetView<OnboardController> {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       child: Text(
-        'Control Your Bluetooth LED DEVICE!',
+        'Welcome to HanSangWook BLE App.',
         style:
             TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 30),
       ),
