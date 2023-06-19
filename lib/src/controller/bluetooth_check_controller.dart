@@ -1,6 +1,6 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_bluetooth_app/src/view/check.dart';
-import 'package:flutter_bluetooth_app/src/view/home.dart';
+import 'package:flutter_bluetooth_app/src/view/onboard.dart';
 import 'package:get/get.dart';
 
 import '../constants/flutter_blue_const.dart';
@@ -20,7 +20,7 @@ class BluetoothCheckController extends GetxController {
   void moveToPage() {
     if (_bluetoothState.value == BluetoothState.on) {
       print('eh');
-      Get.off(() => const Home(), transition: Transition.fadeIn);
+      Get.off(() => const OnBoard(), transition: Transition.fadeIn);
     } else {
       print('he');
       Get.off(() => const Check(), transition: Transition.fadeIn);

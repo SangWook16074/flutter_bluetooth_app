@@ -34,7 +34,7 @@ class OnBoard extends GetView<OnboardController> {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       child: Text(
-        'Scan nearby Bluetooth devices!',
+        'Control Your Bluetooth LED DEVICE!',
         style:
             TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 30),
       ),
@@ -45,7 +45,7 @@ class OnBoard extends GetView<OnboardController> {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       child: Text(
-        'This app easily scans for nearby BLE devices and connects them quickly.',
+        'This app easily scans for nearby bluetooth LED devices and connects, control them quickly.',
         style:
             TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 15),
       ),

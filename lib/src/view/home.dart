@@ -51,8 +51,8 @@ class Home extends GetView<BluetoothController> {
         ? Container()
         : Column(
             children: [
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
@@ -97,8 +97,8 @@ class Home extends GetView<BluetoothController> {
         ? _noResult()
         : Column(
             children: [
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(

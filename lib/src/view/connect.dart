@@ -5,6 +5,7 @@ import 'package:flutter_bluetooth_app/src/controller/bluetooth_controller.dart';
 import 'package:flutter_bluetooth_app/src/data/model/bluetooth_device_model.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class Connect extends StatefulWidget {
   final DeviceModel deviceModel;
   bool current;
@@ -29,7 +30,7 @@ class _ConnectState extends State<Connect> {
     if (result != []) {
       print(String.fromCharCodes(result));
       setState(() {
-        if (String.fromCharCodes(result) == '0') {
+        if (String.fromCharCodes(result) == '1') {
           widget.current = false;
         } else {
           widget.current = true;
