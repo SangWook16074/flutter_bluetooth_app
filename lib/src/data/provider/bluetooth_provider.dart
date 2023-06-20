@@ -13,8 +13,8 @@ class BluetoothApi {
   }
 
   static void sendData(BluetoothDevice device, String data) async {
-    Guid serviceUuid = Guid("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
-    Guid characteristicUuid = Guid("beb5483e-36e1-4688-b7f5-ea07361b26a8");
+    Guid serviceUuid = Guid(TargetBLE.serviceUuid);
+    Guid characteristicUuid = Guid(TargetBLE.characteristicUuid);
 
     List<BluetoothService> services = await device.discoverServices();
     BluetoothService service =
@@ -38,7 +38,7 @@ class BluetoothApi {
 
     return deviceModel.device!.discoverServices().then((services) {
       for (var service in services) {
-        if (service.uuid.toString() == '4fafc201-1fb5-459e-8fcc-c5c9c331914b') {
+        if (service.uuid.toString() == TargetBLE.serviceUuid) {
           var cs = service.characteristics;
           for (BluetoothCharacteristic c in cs) {
             c.read().then((value) => result = value);
@@ -48,4 +48,10 @@ class BluetoothApi {
       return result;
     });
   }
+}
+
+class TargetBLE {
+  static String get serviceUuid => "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+  static String get characteristicUuid =>
+      "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 }
