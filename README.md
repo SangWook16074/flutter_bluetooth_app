@@ -4,7 +4,6 @@
 
 ## 앱 UI
 ----------------------------------------------
-
 <center>
 <img src=https://github.com/SangWook16074/flutter_bluetooth_app/assets/108314973/54f5d4b4-5bfe-4a59-8921-abfcfe6c1171 width=50%>
 <img src=https://github.com/SangWook16074/flutter_bluetooth_app/assets/108314973/80f827c7-cfd9-49bc-928d-5373dd918c76 width=50%>
